@@ -1,29 +1,43 @@
 <script setup>
-import { IonFab, IonFabButton, IonIcon } from '@ionic/vue';
-import { add, trash } from 'ionicons/icons';
+import { 
+  IonPage, 
+  IonHeader, 
+  IonToolbar, 
+  IonTitle, 
+  IonContent, 
+  IonInput,
+  IonList, 
+  IonItem, 
+  IonCheckbox, 
+  IonButton,
+  IonFab, 
+  IonFabButton, 
+  IonIcon
+} from "@ionic/vue"; 
+import { add, trash } from "ionicons/icons";
 
-import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
+import { ref } from "vue";
+import { storeToRefs } from "pinia";
 
 // TODO 1: Import your store
-import { useTaskStore } from '@/stores/taskStore'
+import { useTaskStore } from "@/stores/taskStore";
 
 // TODO 2: Get the store instance
-const taskStore = useTaskStore()
+const taskStore = useTaskStore();
 
 // TODO 3: Destructure REACTIVE STATE using storeToRefs()
-const { tasks, doneCount, pendingCount, totalCount } = storeToRefs(taskStore)
+const { tasks, doneCount, pendingCount, totalCount } = storeToRefs(taskStore);
 
 // TODO 4: Destructure ACTIONS directly (no storeToRefs needed for functions)
-const { addTask, toggleTask, removeTask } = taskStore
+const { addTask, toggleTask, removeTask } = taskStore;
 
 // This local ref is fine — it's UI state, not task state
-const newTaskName = ref('')
+const newTaskName = ref("");
 
 function handleAdd() {
   // TODO 5: Call addTask() from the store, then clear the input
-  addTask(newTaskName.value)
-  newTaskName.value = ''
+  addTask(newTaskName.value);
+  newTaskName.value = "";
 }
 </script>
 
@@ -31,61 +45,58 @@ function handleAdd() {
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>
-          Task List View
-        </ion-title>
+        <ion-title> Task List View </ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content>
       <div class="task-view">
         <h1>📝 Tasks</h1>
-    
+
         <!-- TODO 6: Display totalCount, doneCount, pendingCount from the store -->
         <div class="stats">
           <!-- your stats here -->
-          <div><span>Total</span>
-            <strong>{{ totalCount || 0}}</strong>
+          <div>
+            <span>Total</span>
+            <strong>{{ totalCount || 0 }}</strong>
           </div>
-    
+
           <div>
             <span>Done</span>
-            <strong>{{ doneCount || 0}}</strong>
+            <strong>{{ doneCount || 0 }}</strong>
           </div>
-    
+
           <div>
             <span>Pending</span>
-            <strong>{{ pendingCount || 0}}</strong>
+            <strong>{{ pendingCount || 0 }}</strong>
           </div>
         </div>
-    
+
         <div class="input-row">
-          <input v-model="newTaskName" placeholder="New task..." @keyup.enter="handleAdd" />
-          <button @click="handleAdd" :disabled="!newTaskName.trim()">Add</button>
+          <ion-input
+            v-model="newTaskName"
+            placeholder="New task..."
+            @keyup.enter="handleAdd"
+          />
         </div>
-    
+
         <!-- TODO 7: Render the task list using tasks from the store -->
         <ion-list class="task-list">
           <!-- v-for task in tasks -->
           <!--   checkbox v-model="task.done" @change="toggleTask(task.id)" -->
           <!--   span :class done -->
           <!--   remove button @click="removeTask(task.id)" -->
-          <ion-item v-for="task in tasks" :key="task.id">
-            <ion-checkbox
-                v-model="task.done"
-                @change="toggleTask(task.id)"
-            />
-            <ion-span :class="{done: task.done}">
-                {{ task.name }}
-            </ion-span>
+          <ion-item v-for="task in tasks" :key="task.id" lines="none">
+            <ion-checkbox v-model="task.done" @change="toggleTask(task.id)" />
+            <span :class="{ done: task.done }">
+              {{ task.name }}
+            </span>
             <ion-button @click="removeTask(task.id)" color="danger">
               <ion-icon :icon="trash"></ion-icon>
             </ion-button>
           </ion-item>
         </ion-list>
-        <p v-show="!tasks || tasks.length === 0">
-          No tasks yet. Add one above!
-        </p>
+        <p v-if="!tasks || tasks.length === 0">No tasks yet. Add one above!</p>
       </div>
     </ion-content>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
@@ -97,14 +108,20 @@ function handleAdd() {
 </template>
 
 <style scoped>
-.task-view { max-width: 480px; margin: 40px auto; padding: 24px; font-family: Arial, sans-serif; }
+.task-view {
+  max-width: 480px;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
 
 .task-view p {
-    text-align: center;
-    font-style: italic;
-    color: #666;
+  text-align: center;
+  font-style: italic;
+  color: #666;
 }
-h1 { color: #1B2A4A; }
+h1 {
+  color: #1b2a4a;
+}
 /* .stats { font-size: 13px; color: #555; padding: 8px 12px; background: #e9f7f0; border-radius: 6px; margin-bottom: 16px; } */
 .stats {
   font-size: 13px;
@@ -130,7 +147,7 @@ h1 { color: #1B2A4A; }
 
 .stats strong {
   font-size: 18px;
-  color: #42B883;
+  color: #42b883;
 }
 
 .task-list ion-list ion-button {
@@ -144,27 +161,70 @@ h1 { color: #1B2A4A; }
 }
 
 .task-list ion-list button:hover {
-  background: #FDC9C9;
+  background: #fdc9c9;
 }
 
-.input-row { display: flex; gap: 8px; margin-bottom: 16px; }
-.input-row input { flex: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
-.input-row button { padding: 8px 16px; background: #42B883; color: white; border: none; border-radius: 6px; cursor: pointer; }
+.input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.input-row input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.input-row button {
+  padding: 8px 16px;
+  background: #42b883;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
 .input-row button:hover {
-  background: #399D70; 
+  background: #399d70;
 }
 
 .input-row button:disabled {
   background: #619d829c;
   cursor: not-allowed;
 }
-.task-list { list-style: none; padding: 0; margin: 0; }
-.task-list ion-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: white; border-radius: 6px; margin-bottom: 8px; border: 1px solid #eee; }
-.task-list ion-item ion-span { flex: 1; font-size: 14px; }
-.done { text-decoration: line-through; color: #9ca3af; }
-.task-list ion-item .remove { padding: 4px 10px; background: #fee2e2; color: #dc2626; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; }
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.task-list ion-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: white;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  border: 1px solid #d8d8d8;
+}
+.task-list ion-item span {
+  flex: 1;
+  font-size: 14px;
+}
+.done {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+.task-list ion-item .remove {
+  padding: 4px 10px;
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
 ion-fab {
   z-index: 1000 !important;
 }
-
 </style>
