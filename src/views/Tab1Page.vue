@@ -1,28 +1,7 @@
-<!-- <template>
-  <ion-page>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Tab 1</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Tab 1</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
-      <ExploreContainer name="Tab 1 page" />
-    </ion-content>
-  </ion-page>
-</template>
-
-<script setup lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import ExploreContainer from '@/components/ExploreContainer.vue';
-</script>
- -->
 <script setup>
+import { IonFab, IonFabButton, IonIcon } from '@ionic/vue';
+import { add, trash } from 'ionicons/icons';
+
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
@@ -40,54 +19,25 @@ const { addTask, toggleTask, removeTask } = taskStore
 
 // This local ref is fine — it's UI state, not task state
 const newTaskName = ref('')
-const username = ref('')
 
 function handleAdd() {
   // TODO 5: Call addTask() from the store, then clear the input
   addTask(newTaskName.value)
   newTaskName.value = ''
 }
-
-function handleLogIn() {
-    logIn(username.value)
-    console.log(username.value)
-    username.value = ''
-}
-
-function handleLogOut() {
-    logOut(currentUser.value.name)
-}
 </script>
 
 <template>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <header>
-    <div v-if="!currentUser" class="auth-row">
-        <input 
-            type="text"
-            placeholder="Username"
-            v-model="username"
-            @keyup.enter="handleLogIn"
-        />
-        <button
-            @click="handleLogIn"
-            :disabled="!username.trim()"
-        >
-            Log In
-        </button>
-    </div>
-    <div v-if="currentUser" class="user-row">
-        <h2>
-            Current user: {{ currentUser.name }}
-        </h2>
-        <button
-            @click="handleLogOut"
-        >
-            Log Out
-        </button>
-    </div>
-  </header>
-  <main>
+  <ion-page>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>
+          Task List View
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
       <div class="task-view">
         <h1>📝 Tasks</h1>
     
@@ -111,107 +61,42 @@ function handleLogOut() {
     
         <div class="input-row">
           <input v-model="newTaskName" placeholder="New task..." @keyup.enter="handleAdd" />
-          <button @click="handleAdd" :disabled="!newTaskName.trim() || !currentUser">Add</button>
+          <button @click="handleAdd" :disabled="!newTaskName.trim()">Add</button>
         </div>
     
         <!-- TODO 7: Render the task list using tasks from the store -->
-        <ul class="task-list">
+        <ion-list class="task-list">
           <!-- v-for task in tasks -->
           <!--   checkbox v-model="task.done" @change="toggleTask(task.id)" -->
           <!--   span :class done -->
           <!--   remove button @click="removeTask(task.id)" -->
-          <li v-for="task in tasks">
-            <input
-                type="checkbox"
+          <ion-item v-for="task in tasks" :key="task.id">
+            <ion-checkbox
                 v-model="task.done"
                 @change="toggleTask(task.id)"
             />
-            <span :class="{done: task.done}">
+            <ion-span :class="{done: task.done}">
                 {{ task.name }}
-            </span>
-            <button @click="removeTask(task.id)">
-              <i class="fa fa-trash fa-lg"></i>
-            </button>
-          </li>
-        </ul>
-        <p v-show="!tasks || tasks.length === 0 || !currentUser">
-          {{ currentUser ? "No tasks yet. Add one above!" : "Log in to start adding tasks!"}}
+            </ion-span>
+            <ion-button @click="removeTask(task.id)" color="danger">
+              <ion-icon :icon="trash"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+        <p v-show="!tasks || tasks.length === 0">
+          No tasks yet. Add one above!
         </p>
       </div>
-  </main>
+    </ion-content>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button @click="handleAdd">
+        <ion-icon :icon="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ion-page>
 </template>
 
 <style scoped>
-header {
-  max-width: 480px;
-  margin: 24px auto 0;
-  padding: 16px 20px;
-
-  background: #42B883;
-  color: white;
-
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(66, 184, 131, 0.25);
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.auth-row,
-.user-row {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-header h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-header input {
-  flex: 1;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 6px;
-  outline: none;
-}
-
-header button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-
-  background: white;
-  color: #42B883;
-
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-header button:hover {
-  background: #f3f4f6;
-}
-
-header button:disabled {
-  background: #619d829c;
-  cursor: not-allowed;
-}
-
-.logout-btn {
-  background: white;
-  color: #dc2626;
-}
-
-.logout-btn:hover {
-  background: #fee2e2;
-}
-
 .task-view { max-width: 480px; margin: 40px auto; padding: 24px; font-family: Arial, sans-serif; }
 
 .task-view p {
@@ -248,7 +133,7 @@ h1 { color: #1B2A4A; }
   color: #42B883;
 }
 
-.task-list li button {
+.task-list ion-list ion-button {
   padding: 8px;
   background: #fee2e2;
   color: #dc2626;
@@ -258,7 +143,7 @@ h1 { color: #1B2A4A; }
   font-size: 12px;
 }
 
-.task-list li button:hover {
+.task-list ion-list button:hover {
   background: #FDC9C9;
 }
 
@@ -274,8 +159,12 @@ h1 { color: #1B2A4A; }
   cursor: not-allowed;
 }
 .task-list { list-style: none; padding: 0; margin: 0; }
-.task-list li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: white; border-radius: 6px; margin-bottom: 8px; border: 1px solid #eee; }
-.task-list li span { flex: 1; font-size: 14px; }
+.task-list ion-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: white; border-radius: 6px; margin-bottom: 8px; border: 1px solid #eee; }
+.task-list ion-item ion-span { flex: 1; font-size: 14px; }
 .done { text-decoration: line-through; color: #9ca3af; }
-.task-list li .remove { padding: 4px 10px; background: #fee2e2; color: #dc2626; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; }
+.task-list ion-item .remove { padding: 4px 10px; background: #fee2e2; color: #dc2626; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; }
+ion-fab {
+  z-index: 1000 !important;
+}
+
 </style>
