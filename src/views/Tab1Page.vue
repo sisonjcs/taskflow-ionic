@@ -122,7 +122,6 @@ function handleAdd() {
 h1 {
   color: #1b2a4a;
 }
-/* .stats { font-size: 13px; color: #555; padding: 8px 12px; background: #e9f7f0; border-radius: 6px; margin-bottom: 16px; } */
 .stats {
   font-size: 13px;
   color: #666;
@@ -169,29 +168,7 @@ h1 {
   gap: 8px;
   margin-bottom: 16px;
 }
-.input-row input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-}
-.input-row button {
-  padding: 8px 16px;
-  background: #42b883;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.input-row button:hover {
-  background: #399d70;
-}
 
-.input-row button:disabled {
-  background: #619d829c;
-  cursor: not-allowed;
-}
 .task-list {
   list-style: none;
   padding: 0;
@@ -223,8 +200,5 @@ h1 {
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
-}
-ion-fab {
-  z-index: 1000 !important;
 }
 </style>
