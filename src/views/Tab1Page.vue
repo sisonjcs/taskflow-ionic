@@ -112,6 +112,7 @@ function handleAdd() {
   max-width: 480px;
   padding: 24px;
   font-family: Arial, sans-serif;
+  margin: 40px auto;
 }
 
 .task-view p {
