@@ -36,7 +36,7 @@ const completedTasks = computed(() => tasks.value.filter(t => t.done))
                     {{ task.name }}
                 </ion-item>
             </ion-list>
-            <p v-if="!completed && completedTasks.length === 0">
+            <p v-if="!completedTasks || completedTasks.length === 0">
                 No completed tasks as of the moment.
             </p>
         </ion-content>

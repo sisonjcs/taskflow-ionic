@@ -8,7 +8,7 @@ import {
     IonTitle,
     IonContent
 } from '@ionic/vue'
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useTaskStore } from '@/stores/taskStore';
 import { storeToRefs } from 'pinia';
 
@@ -16,8 +16,9 @@ const route = useRoute()
 const taskStore = useTaskStore()
 
 const { tasks } = storeToRefs(taskStore)
+const taskId = ref(Number(route.params.id))
 
-const foundTask = computed(() => tasks.value.find(t => t.id === Number(route.params.id)))
+const foundTask = computed(() => tasks.value.find(t => t.id === taskId.value))
 </script>
 
 <template>
@@ -31,18 +32,23 @@ const foundTask = computed(() => tasks.value.find(t => t.id === Number(route.par
             </ion-toolbar>
         </ion-header>
         <ion-content>
-            <p>
-                ID: {{ foundTask.id }}
-            </p>
-            <p>
-                Name: {{ foundTask.name }}
-            </p>
-            <p>
-                Status: {{ foundTask.done ? "Done" : "Pending" }}
-            </p>
+            <div class="task-details">
+                <p>
+                    ID: {{ foundTask.id }}
+                </p>
+                <p>
+                    Name: {{ foundTask.name }}
+                </p>
+                <p>
+                    Status: {{ foundTask.done ? "Done" : "Pending" }}
+                </p>
+            </div>
         </ion-content>
     </ion-page>
 </template>
 
 <style scoped>
+.task-details {
+    padding: 10px;
+}
 </style>
