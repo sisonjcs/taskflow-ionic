@@ -11,12 +11,13 @@ import {
 import { computed } from 'vue';
 
 import { useTaskStore } from '@/stores/taskStore';
+import { storeToRefs } from 'pinia';
 
 const taskStore = useTaskStore()
 
-const { tasks } = taskStore
+const { tasks } = storeToRefs(taskStore)
 
-const completedTasks = computed(() => tasks.filter(t => t.done))
+const completedTasks = computed(() => tasks.value.filter(t => t.done))
 
 </script>
 
@@ -30,14 +31,22 @@ const completedTasks = computed(() => tasks.filter(t => t.done))
             </ion-toolbar>
         </ion-header>
         <ion-content>
-            <ion-list>
+            <ion-list v-if="completedTasks">
                 <ion-item v-for="task in completedTasks" :key="task.id">
                     {{ task.name }}
                 </ion-item>
             </ion-list>
+            <p v-if="!completed && completedTasks.length === 0">
+                No completed tasks as of the moment.
+            </p>
         </ion-content>
     </ion-page>
 </template>
 
-<styles>
-</styles>
+<style scoped>
+    p {
+        text-align: center;
+        color: gray;
+        font-style: italic;
+    }
+</style>
