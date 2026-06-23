@@ -27,7 +27,7 @@ const foundTask = computed(() => tasks.value.find(t => t.id === taskId.value))
             <ion-toolbar>
                 <ion-back-button slot="start" default-href="/tabs/tasks"/>
                 <ion-title>
-                    Task Detail View
+                    Task Detail View: {{ foundTask.name }}
                 </ion-title>
             </ion-toolbar>
         </ion-header>
@@ -49,6 +49,10 @@ const foundTask = computed(() => tasks.value.find(t => t.id === taskId.value))
 
 <style scoped>
 .task-details {
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px auto;
 }
 </style>
