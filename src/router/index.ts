@@ -17,7 +17,11 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'tasks',
-        component: () => import('@/views/day6/TaskListView.vue')
+        component: () => import('@/views/day6/TaskListView.vue'),
+      },
+      {
+        path: 'tasks/:id',
+        component: () => import('@/views/day7/TaskDetailView.vue'),
       },
       {
         path: 'tab2',

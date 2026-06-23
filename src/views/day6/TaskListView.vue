@@ -15,6 +15,7 @@ import {
   IonIcon
 } from "@ionic/vue"; 
 import { add, trash } from "ionicons/icons";
+import { useRouter } from "vue-router";
 
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
@@ -34,10 +35,17 @@ const { addTask, toggleTask, removeTask } = taskStore;
 // This local ref is fine — it's UI state, not task state
 const newTaskName = ref("");
 
+const router = useRouter()
+
 function handleAdd() {
   // TODO 5: Call addTask() from the store, then clear the input
   addTask(newTaskName.value)
   newTaskName.value = ""
+}
+
+function goToDetail(id) {
+  console.log(id)
+  router.push(`tasks/${id}`)
 }
 </script>
 
@@ -88,7 +96,7 @@ function handleAdd() {
           <!--   remove button @click="removeTask(task.id)" -->
           <ion-item v-for="task in tasks" :key="task.id" lines="none">
             <ion-checkbox v-model="task.done" @change="toggleTask(task.id)" />
-            <span :class="{ done: task.done }">
+            <span :class="{ done: task.done }" @click="goToDetail(task.id)">
               {{ task.name }}
             </span>
             <ion-button @click="removeTask(task.id)" color="danger">
