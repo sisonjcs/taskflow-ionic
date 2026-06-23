@@ -15,21 +15,14 @@ const route = useRoute()
 <template>
     <ion-page>
         <ion-header>
-            <ion-back-button default-href="/tabs/tasks"/>
             <ion-toolbar>
+                <ion-back-button slot="start" default-href="/tabs/tasks"/>
                 <ion-title>
                     Task Detail View
                 </ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content>
-            <ion-header>
-                <ion-toolbar>
-                    <ion-title>
-                        Task {{ route.params.id }}
-                    </ion-title>
-                </ion-toolbar>
-            </ion-header>
             <p>
                 ID: {{ route.params.id }}
             </p>
