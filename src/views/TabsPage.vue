@@ -8,7 +8,7 @@
           <ion-label>Tasks</ion-label>
         </ion-tab-button>
 
-        <ion-tab-button tab="tab2" href="/tabs/tab2">
+        <ion-tab-button tab="completed" href="/tabs/completed">
           <ion-icon aria-hidden="true" :icon="checkmarkDoneCircle" />
           <ion-label>Completed</ion-label>
         </ion-tab-button>

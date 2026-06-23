@@ -24,8 +24,8 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/day7/TaskDetailView.vue'),
       },
       {
-        path: 'tab2',
-        component: () => import('@/views/Tab2Page.vue')
+        path: 'completed',
+        component: () => import('@/views/day7/CompletedTaskView.vue')
       },
       {
         path: 'tab3',
