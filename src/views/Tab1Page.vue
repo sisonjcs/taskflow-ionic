@@ -36,8 +36,8 @@ const newTaskName = ref("");
 
 function handleAdd() {
   // TODO 5: Call addTask() from the store, then clear the input
-  addTask(newTaskName.value);
-  newTaskName.value = "";
+  addTask(newTaskName.value)
+  newTaskName.value = ""
 }
 </script>
 
