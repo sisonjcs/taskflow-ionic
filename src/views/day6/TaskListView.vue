@@ -44,7 +44,7 @@ function handleAdd() {
   newTaskName.value = ""
 }
 
-function goToDetail(id) {
+function goToDetail(id) { 
   router.push(`tasks/${id}`)
 }
 </script>
@@ -97,7 +97,7 @@ function goToDetail(id) {
           <ion-item v-for="task in tasks" :key="task.id" lines="none">
             <div>
               <ion-checkbox v-model="task.done" @change="toggleTask(task.id)" />
-              <ion-img v-if="task.photo" :src="task.photo"/>
+              <ion-img v-if="task.photo" :src="task.photo" :alt="task.name"/>
             </div>
             <span :class="{ done: task.done }" @click="goToDetail(task.id)">
               {{ task.name }}

@@ -38,7 +38,7 @@ const completedTasks = computed(() => tasks.value.filter(t => t.done))
                         :key="task.id" 
                         lines="none"
                     >
-                        <ion-img v-if="task.photo" :src="task.photo"/>
+                        <ion-img v-if="task.photo" :src="task.photo" :alt="task.name"/>
                         <span class="task-name">{{ task.name }}</span>
                     </ion-item>
                 </ion-list>

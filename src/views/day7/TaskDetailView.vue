@@ -46,7 +46,7 @@ const takePhoto = async(id) => {
             <ion-toolbar>
                 <ion-back-button slot="start" default-href="/tabs/tasks"/>
                 <ion-title> Task Detail View: {{ foundTask.name }} </ion-title>
-                <ion-button slot="end" @click="takePhoto(foundTask.id)">
+                <ion-button fill="clear" slot="end" @click="takePhoto(foundTask.id)">
                   <ion-icon :icon="camera"></ion-icon>
                 </ion-button>
             </ion-toolbar>
@@ -66,7 +66,7 @@ const takePhoto = async(id) => {
                     <p v-if="foundTask.photo">
                       <span class="label">Image:</span>
                     </p>
-                    <ion-img v-if="foundTask.photo" :src="foundTask.photo"/>
+                    <ion-img v-if="foundTask.photo" :src="foundTask.photo" :alt="foundTask.name"/>
                 </div>
                 <p v-else class="not-found">Task not found.</p>
             </div>
@@ -128,5 +128,8 @@ h1 {
   color: #666;
   font-style: italic;
   margin-top: 20px;
+}
+ion-icon {
+  color: black;
 }
 </style>
