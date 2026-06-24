@@ -4,21 +4,39 @@ import {
     IonPage,
     IonHeader,
     IonBackButton,
+    IonButton,
     IonToolbar,
     IonTitle,
-    IonContent
+    IonContent,
+    IonImg
 } from '@ionic/vue'
+import { camera } from 'ionicons/icons';
 import { computed, ref } from 'vue';
 import { useTaskStore } from '@/stores/taskStore';
 import { storeToRefs } from 'pinia';
+import { Camera } from '@capacitor/camera';
 
 const route = useRoute()
 const taskStore = useTaskStore()
 
 const { tasks } = storeToRefs(taskStore)
+const { addPhoto } = taskStore
 const taskId = ref(Number(route.params.id))
 
 const foundTask = computed(() => tasks.value.find(t => t.id === taskId.value))
+
+const takePhoto = async(id) => {
+  try {
+    const result = await Camera.takePhoto({
+      quality: 90,
+      includeMetadata: true
+    })
+
+    addPhoto(id, result.webPath)
+  } catch (e) {
+    console.log(e)
+  }
+}
 </script>
 
 <template>
@@ -27,6 +45,9 @@ const foundTask = computed(() => tasks.value.find(t => t.id === taskId.value))
             <ion-toolbar>
                 <ion-back-button slot="start" default-href="/tabs/tasks"/>
                 <ion-title> Task Detail View: {{ foundTask.name }} </ion-title>
+                <ion-button slot="end" @click="takePhoto(foundTask.id)">
+                  <ion-icon :icon="camera"></ion-icon>
+                </ion-button>
             </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -41,6 +62,7 @@ const foundTask = computed(() => tasks.value.find(t => t.id === taskId.value))
                             {{ foundTask.done ? "Done" : "Pending" }}
                         </strong>
                     </p>
+                    <ion-img v-if="foundTask.photo" :src="foundTask.photo"/>
                 </div>
                 <p v-else class="not-found">Task not found.</p>
             </div>
