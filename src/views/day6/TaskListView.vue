@@ -45,7 +45,6 @@ function handleAdd() {
 }
 
 function goToDetail(id) {
-  console.log(id)
   router.push(`tasks/${id}`)
 }
 </script>

@@ -6,7 +6,8 @@ import {
     IonTitle,
     IonContent,
     IonList,
-    IonItem
+    IonItem,
+    IonImg
 } from '@ionic/vue'
 import { computed } from 'vue';
 
@@ -37,6 +38,7 @@ const completedTasks = computed(() => tasks.value.filter(t => t.done))
                         :key="task.id" 
                         lines="none"
                     >
+                        <ion-img v-if="task.photo" :src="task.photo"/>
                         <span class="task-name">{{ task.name }}</span>
                     </ion-item>
                 </ion-list>
@@ -83,5 +85,10 @@ p {
   font-style: italic;
   color: #666;
   margin-top: 20px;
+}
+ion-img {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
 }
 </style>

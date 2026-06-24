@@ -109,6 +109,9 @@ h1 {
   font-size: 15px;
   display: flex;
   justify-content: space-between;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .label {
   font-weight: bold;
