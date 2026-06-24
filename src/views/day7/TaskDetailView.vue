@@ -36,6 +36,7 @@ const takePhoto = async(id) => {
     addPhoto(id, result.webPath)
   } catch (e) {
     console.log(e)
+    alert(e) // for debugging
   }
 }
 </script>
