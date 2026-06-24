@@ -8,6 +8,7 @@ import {
     IonToolbar,
     IonTitle,
     IonContent,
+    IonIcon,
     IonImg
 } from '@ionic/vue'
 import { camera } from 'ionicons/icons';
@@ -61,6 +62,9 @@ const takePhoto = async(id) => {
                         <strong :class="{ done: foundTask.done, pending: !foundTask.done }">
                             {{ foundTask.done ? "Done" : "Pending" }}
                         </strong>
+                    </p>
+                    <p v-if="foundTask.photo">
+                      <span class="label">Image:</span>
                     </p>
                     <ion-img v-if="foundTask.photo" :src="foundTask.photo"/>
                 </div>

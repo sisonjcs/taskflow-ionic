@@ -12,7 +12,8 @@ import {
   IonButton,
   IonFab, 
   IonFabButton, 
-  IonIcon
+  IonIcon,
+  IonImg
 } from "@ionic/vue"; 
 import { add, trash } from "ionicons/icons";
 import { useRouter } from "vue-router";
@@ -95,7 +96,10 @@ function goToDetail(id) {
           <!--   span :class done -->
           <!--   remove button @click="removeTask(task.id)" -->
           <ion-item v-for="task in tasks" :key="task.id" lines="none">
-            <ion-checkbox v-model="task.done" @change="toggleTask(task.id)" />
+            <div>
+              <ion-checkbox v-model="task.done" @change="toggleTask(task.id)" />
+              <ion-img v-if="task.photo" :src="task.photo"/>
+            </div>
             <span :class="{ done: task.done }" @click="goToDetail(task.id)">
               {{ task.name }}
             </span>
@@ -209,5 +213,16 @@ h1 {
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
+}
+ion-item div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-right: 20px;
+}
+ion-img {
+  width: 100px;
+  height: 100px;
 }
 </style>
