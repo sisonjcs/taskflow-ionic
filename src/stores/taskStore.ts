@@ -11,7 +11,6 @@ interface Task {
 
 export const useTaskStore = defineStore('tasks', () => {
     const STORAGE_KEY = 'taskflow_tasks'
-    const ID_KEY = 'taskflow_id'
 
     const tasks = ref<Task[]>([])
     const nextId = ref(1)
@@ -21,28 +20,26 @@ export const useTaskStore = defineStore('tasks', () => {
     const pendingCount = computed(() => tasks.value?.filter(t => !t.done).length)
 
     const saveTasks = async() => {
+        const taskJSON = JSON.stringify(tasks.value)
         await Preferences.set({
             key: STORAGE_KEY,
-            value: JSON.stringify(tasks.value)
+            value: taskJSON,
         })
-        await Preferences.set({
-            key: ID_KEY,
-            value: JSON.stringify(nextId.value)
-        })
+        console.log(taskJSON)
+        console.log("Stored values")
     }
 
     const loadTasks = async() => {
-        const { storageValue }: any = await Preferences.get({key: STORAGE_KEY})
-        const { taskId }: any = await Preferences.get({key: ID_KEY})
-        if (storageValue.value) {
-           tasks.value = storageValue.value
-        }
-        if (taskId.value) {
-            nextId.value = taskId.value
-        }
+        const { storageValue }: any = await Preferences.get({key: STORAGE_KEY,})
+        // const { taskId }: any = await Preferences.get({key: ID_KEY})
+        if (storageValue) {
+           tasks.value = JSON.parse(storageValue.value)
+           nextId.value = tasks.value[tasks.value.length - 1].id + 1
+        } 
+        console.log("Loaded tasks")
     }
 
-    function addTask(name: string) {
+    async function addTask(name: string) {
         if (name) {
             const newTask = {
                 id: nextId.value++,
@@ -51,33 +48,33 @@ export const useTaskStore = defineStore('tasks', () => {
             }
 
             tasks.value.push(newTask)
-            saveTasks()
         }
+        await saveTasks()
     }
 
-    function toggleTask(id: number) {
+    async function toggleTask(id: number) {
         const foundTask = tasks.value.find(t => t.id === id)
         if (foundTask) {
             foundTask.done = !foundTask.done
-            saveTasks()
         }
+        await saveTasks()
     }
 
-    function removeTask(id: number) {
+    async function removeTask(id: number) {
         const foundTask = tasks.value.find(t => t.id === id)
         if (foundTask) {
             tasks.value = tasks.value.filter(t => t.id !== id)
-            saveTasks()
         }
+        await saveTasks()
     }
 
-    function addPhoto(id: number, photoPath: string) {
+    async function addPhoto(id: number, photoPath: string) {
         const foundTask = tasks.value.find(t => t.id === id)
 
         if (foundTask && photoPath) {
             foundTask.photo = photoPath
-            saveTasks()
         }
+         await saveTasks()
     }
     
     return ({ tasks, doneCount, pendingCount, totalCount, addTask, toggleTask, removeTask, addPhoto, loadTasks })
