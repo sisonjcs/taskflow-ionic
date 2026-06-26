@@ -46,6 +46,16 @@ export const useTaskStore = defineStore('tasks', () => {
         console.log(nextId.value)
     }
 
+    // Helper function for converting image blob to base64 string
+    function convertBlobToBase64(blob: Blob) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onerror = reject;
+            reader.onload = () => resolve(reader.result)
+            reader.readAsDataURL(blob)
+        })
+    }
+
     async function addTask(name: string) {
         if (name) {
             const newTask = {
@@ -79,7 +89,13 @@ export const useTaskStore = defineStore('tasks', () => {
         const foundTask = tasks.value.find(t => t.id === id)
 
         if (foundTask && photoPath) {
-            foundTask.photo = photoPath
+            // convert blob to base 64 before storing in task obj
+            const response = await fetch(photoPath)
+            const blob = await response.blob()
+
+            const base64 = await convertBlobToBase64(blob)
+
+            foundTask.photo = base64 as string
         }
          await saveTasks()
     }
